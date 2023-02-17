@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  const didRun = useRef(false);
+
+  useEffect(() => {
+    if (!didRun.current) {
+      didRun.current = true;
+      console.log('Appがレンダリングされました');
+    }
+  },[]);
+
   return (
     <div className="App">
       <header className="App-header">
