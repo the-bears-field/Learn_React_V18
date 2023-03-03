@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { startTransition, ReactNode, useState, FC } from 'react';
 import { Avatar } from './Avatar';
 
 type Task = {
@@ -38,13 +38,15 @@ const filteringAssignee = (assignee: string): Task[] => {
     : tasks.filter((task) => task.assignee === assignee);
 }
 
-export const Transition = () => {
+export const Transition: FC = () => {
   const [ selectedAssignee, setSelectedAssignee ] = useState<string>('');
   const [ taskList, setTaskList ] = useState<Task[]>(tasks);
 
-  const onClickAssignee = (assignee: string) => {
+  const onClickAssignee = (assignee: string): void => {
+    const filteredAssignee: Task[] = filteringAssignee(assignee);
+
     setSelectedAssignee(assignee);
-    setTaskList(filteringAssignee(assignee));
+    startTransition((): void => setTaskList(filteredAssignee));
   }
 
   const isSelected = (member: string): boolean => {
