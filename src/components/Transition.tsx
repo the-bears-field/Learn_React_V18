@@ -1,4 +1,4 @@
-import { startTransition, ReactNode, useState, FC } from 'react';
+import { useTransition, ReactNode, useState, FC } from 'react';
 import { Avatar } from './Avatar';
 
 type Task = {
@@ -41,6 +41,7 @@ const filteringAssignee = (assignee: string): Task[] => {
 export const Transition: FC = () => {
   const [ selectedAssignee, setSelectedAssignee ] = useState<string>('');
   const [ taskList, setTaskList ] = useState<Task[]>(tasks);
+  const [ isPending, startTransition ] = useTransition();
 
   const onClickAssignee = (assignee: string): void => {
     const filteredAssignee: Task[] = filteringAssignee(assignee);
@@ -62,13 +63,15 @@ export const Transition: FC = () => {
         <Avatar onClick={onClickAssignee} isSelected={isSelected(member.c)}>{ member.c }</Avatar>
       </div>
       <button style={{ marginTop: '16px' }} onClick={() => onClickAssignee('')}>リセット</button>
-      { taskList.map<ReactNode>((task) => (
+      { isPending && <p>…</p> }
+      { isPending || taskList.map<ReactNode>((task) => (
         <div
           key={task.id}
           style={{
             width: '300px',
             margin: 'auto',
-            background: 'lavender'
+            background: 'lavender',
+            opacity: isPending ? 0.5 : 1
           }}
         >
           <p>タイトル: {task.title}</p>
