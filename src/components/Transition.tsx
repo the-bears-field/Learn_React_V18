@@ -42,6 +42,7 @@ const filteringAssignee = (assignee: string): Task[] => {
 export const Transition: FC = () => {
   const [ selectedAssignee, setSelectedAssignee ] = useState<string>('');
   const [ taskList, setTaskList ] = useState<Task[]>(tasks);
+  const [ isShowList, setIsShowList ] = useState<boolean>(false);
 
   const onClickAssignee = (assignee: string): void => {
     const filteredAssignee: Task[] = filteringAssignee(assignee);
@@ -62,8 +63,18 @@ export const Transition: FC = () => {
         <Avatar onClick={onClickAssignee} isSelected={isSelected(member.b)} >{ member.b }</Avatar>
         <Avatar onClick={onClickAssignee} isSelected={isSelected(member.c)}>{ member.c }</Avatar>
       </div>
-      <button style={{ marginTop: '16px' }} onClick={() => onClickAssignee('')}>リセット</button>
-      <TaskList taskList={taskList} />
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100px',
+        margin: 'auto'
+      }}>
+        <button style={{ marginTop: '16px' }} onClick={() => onClickAssignee('')}>リセット</button>
+        <button style={{ marginTop: '16px' }} onClick={() => setIsShowList(!isShowList)}>
+          { isShowList ? '非表示' : '表示' }
+        </button>
+      </div>
+      { isShowList && <TaskList taskList={taskList} /> }
     </div>
   );
 }
