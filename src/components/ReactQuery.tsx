@@ -14,10 +14,10 @@ const fetchAlbums = async (): Promise<Album[]> => {
 }
 
 export const ReactQuery: FC = () => {
-  const { isLoading, error, data } = useQuery<Album[]>(['albums'], fetchAlbums);
-
-  if (error) return <p>エラーです</p>
-  if (isLoading) return <p>ロード中です</p>
+  const { isLoading, error, data } = useQuery<Album[]>({
+    queryKey: ['albums'],
+    queryFn: fetchAlbums
+  });
 
   return (
     <div>
